@@ -106,7 +106,7 @@ function parseKnownHostsFile(fn) {
       var hh = eh.split('|')[1];
       rv.host = hh;
       rv.hostCheck = hostCheckHash(key, hh);
-      rv.verify = verify(hostCheckHash(key, hh), hashSec);
+      rv.verify = verify();
     } else {
       // this section processes normal hostnames
 
