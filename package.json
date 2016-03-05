@@ -1,0 +1,11 @@
+{
+  "name": "known_hosts",
+  "version": "1.0.0",
+  "description": "Parses and returns array of objects representing the entries in a known_hosts file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brian Harper <bharper@gmail.com> (https://github.com/bsharper/)",
+  "license": "ISC"
+}
