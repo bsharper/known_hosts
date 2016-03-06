@@ -1,6 +1,6 @@
 {
   "name": "known_hosts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Parses and returns array of objects representing the entries in a known_hosts file",
   "main": "index.js",
   "scripts": {
