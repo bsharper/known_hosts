@@ -27,9 +27,9 @@ function getUserHome() {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-function verify() {
+function verify(hostCheck, hostKeyHash) {
   return (host, hash) => {
-    return this.hostCheck(host) && this.hostKeyHash == hash;
+    return hostCheck(host) && hostKeyHash == hash;
   }
 }
 
@@ -106,7 +106,6 @@ function parseKnownHostsFile(fn) {
       var hh = eh.split('|')[1];
       rv.host = hh;
       rv.hostCheck = hostCheckHash(key, hh);
-      rv.verify = verify();
     } else {
       // this section processes normal hostnames
 
@@ -115,7 +114,7 @@ function parseKnownHostsFile(fn) {
         rv.host = hip[0];
         rv.ip = hip[1];
       } else {
-        // Quick and cheap IP matching, currently online ipv4.
+        // Quick and cheap IP matching, currently only ipv4.
         if (hostIPsec.match(/^[0-9.]+$/g)) {
           rv.ip = hostIPsec;
         } else {
@@ -123,18 +122,17 @@ function parseKnownHostsFile(fn) {
         }
       }
       rv.hostCheck = hostCheckNormal(rv.ip, rv.host);
-      rv.verify = verify();
     }
 
     // assign the key type
     rv.type = typeSec;
 
     // compute the sha1 of the base64 key
-
     var key = new Buffer(hashSec, 'base64');
-    var hash = crypto.createHash('sha1');
+    var hash = crypto.createHash('sha256');
     hash.update(key);
     rv.hostKeyHash = hash.digest('hex');
+    rv.verify = verify(rv.hostCheck, rv.hostKeyHash);
     keys.push(rv);
   });
   return keys;
